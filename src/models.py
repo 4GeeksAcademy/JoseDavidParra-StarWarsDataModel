@@ -15,11 +15,11 @@ class User(Base):
     username = Column(String(250), nullable=False)
     email = Column(String(250))
     password = Column(String(250))
-    favorite_planets = relationship('FavoritePlanets',backref = 'user',lazy=True)
-    favorite_characters = relationship('FavoriteCharacters',backref = 'user' ,lazy = True)
-    favorite_starships = relationship('FavoriteStarships',backref = 'user' ,lazy = True)
+    favorite_planets = relationship('FavoritePlanet',backref = 'user',lazy=True)
+    favorite_characters = relationship('FavoriteCharacter',backref = 'user' ,lazy = True)
+    favorite_starships = relationship('FavoriteStarship',backref = 'user' ,lazy = True)
     
-class Planets(Base):
+class Planet(Base):
     __tablename__ = 'planets'
     id = Column(Integer,primary_key=True)
     name = Column(String(250))
@@ -31,10 +31,10 @@ class Planets(Base):
     terrain = Column(String)
     surface_water = Column(Integer)
     population = Column(Integer)
-    usersPlanets = relationship('FavoritePlanets',backref = 'plantes',lazy=True)
-    characters = relationship("Characters",backref = "planets",lazy =True)
+    usersPlanet = relationship('FavoritePlanet',backref = 'plantes',lazy=True)
+    characters = relationship("Character",backref = "planets",lazy =True)
 
-class Characters(Base):
+class Character(Base):
     __tablename__ = 'characters'
     id = Column(Integer,primary_key=True)
     name = Column(String(250))
@@ -46,10 +46,10 @@ class Characters(Base):
     birth_year = Column(Integer)
     gender = Column(String)
     planet_id = Column(Integer,ForeignKey('planets.id'))
-    usersCharacters = relationship('FavoriteCharacters',backref = 'characters',lazy=True)
+    usersCharacter = relationship('FavoriteCharacter',backref = 'characters',lazy=True)
     starships = relationship('Pilots',backref = 'characters' ,lazy = True)
 
-class Starships(Base):
+class Starship(Base):
     __tablename__  = 'starships'
     id = Column(Integer,primary_key = True)
     name = Column(String(250))
@@ -65,7 +65,7 @@ class Starships(Base):
     hyperdrive_rating = Column(REAL)
     mglt = Column(Integer)
     starship_class = Column(String)
-    usersStarships = relationship('FavoriteStarships',backref = 'starships',lazy=True)
+    usersStarship = relationship('FavoriteStarship',backref = 'starships',lazy=True)
     pilots = relationship('Pilots',backref = 'starships' ,lazy = True)
 
 class Pilots(Base):
@@ -73,12 +73,12 @@ class Pilots(Base):
     pilot_id = Column(Integer,ForeignKey('characters.id'),primary_key = True)
     starship_id = Column(Integer,ForeignKey('starships.id'),primary_key = True)
 
-class FavoritePlanets(Base):
+class FavoritePlanet(Base):
     __tablename__ = 'favorite_planets'
     user_id = Column(Integer,ForeignKey('user.id'),primary_key = True)
     planet_id = Column(Integer,ForeignKey('planets.id'),primary_key = True)
 
-class FavoriteCharacters(Base):
+class FavoriteCharacter(Base):
     __tablename__ = 'favorite_characters'
     user_id = Column(Integer,ForeignKey('user.id'),primary_key = True)
     character_id = Column(Integer,ForeignKey('characters.id'),primary_key = True)
